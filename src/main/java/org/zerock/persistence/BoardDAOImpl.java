@@ -18,7 +18,7 @@ public class BoardDAOImpl implements BoardDAO {
     @Inject
     private SqlSession session;
 
-    private static String namespace = "org.zerock.mapper.BoardMapper";
+    private static String namespace = "org.zerock.mapper.boardMapper";
 
     @Override
     public void create(BoardVO vo) throws Exception {

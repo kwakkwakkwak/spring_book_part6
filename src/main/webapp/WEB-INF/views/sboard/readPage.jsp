@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 
@@ -85,9 +86,10 @@
                 <div class="box-footer">
 
                     <ul class="mailbox-attachments clearfix uploadedList"></ul>
-
+                    <c:if test ="${login.uid == boardVO.writer}">
                     <button type="submit" class="btn btn-warning" id="modifyBtn">Modify</button>
                     <button type="submit" class="btn btn-danger" id="removeBtn">REMOVE</button>
+                    </c:if>
                     <button type="submit" class="btn btn-primary" id="goListBtn">GO
                         LIST</button>
                 </div>
@@ -111,6 +113,7 @@
                 <div class="box-header">
                     <h3 class="box-title">ADD NEW REPLY</h3>
                 </div>
+                <c:if test="${not empty login}">
                 <div class="box-body">
                     <label for="exampleInputEmail1">Writer</label> <input
                         class="form-control" type="text" placeholder="USER ID"
@@ -123,7 +126,13 @@
                 <div class="box-footer">
                     <button type="button" class="btn btn-primary" id="replyAddBtn">ADD
                         REPLY</button>
-                </div>
+                </div></c:if>
+                <c:if test="${empty login}">
+                    <div class="box-body">
+                        <div><a href="javascript:goLogin();">Login Please</a> </div>
+                    </div>
+                </c:if>
+
             </div>
 
 
@@ -200,9 +209,11 @@
   </span>
             <h3 class="timeline-header"><strong>{{rno}}</strong> -{{replyer}}</h3>
             <div class="timeline-body">{{replytext}} </div>
+            {{#eqReplyer replyer }}
             <div class="timeline-footer">
                 <a class="btn btn-primary btn-xs"
                    data-toggle="modal" data-target="#modifyModal">Modify</a>
+                {{/eqReplyer}}
             </div>
         </div>
     </li>
@@ -462,6 +473,14 @@
         });
 
     });
+    Handlebars.registerHelper("eqReplyer", function (replyer, block) {
+        var accum ='';
+
+        if(replyer == '${login.uid}'){
+            accum += block.fn();
+        }
+        return accum;
+    })
 </script>
 
 <script type="text/javascript" src="/resources/js/upload.js"></script>
