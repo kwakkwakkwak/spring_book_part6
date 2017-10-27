@@ -7,6 +7,9 @@ import org.zerock.domain.UserVO;
 import org.zerock.dto.LoginDTO;
 
 import javax.inject.Inject;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Repository
 public class UserDAOImpl implements UserDAO{
@@ -20,5 +23,21 @@ public class UserDAOImpl implements UserDAO{
     @Override
     public UserVO login(LoginDTO dto) throws Exception {
         return session.selectOne(namespace+".login",dto);
+    }
+
+    @Override
+    public void keepLogin(String uid, String sessionId, Date next) {
+
+        Map<String,Object> paramMap = new HashMap<>();
+        paramMap.put("uid",uid);
+        paramMap.put("sessionId",sessionId);
+        paramMap.put("next",next);
+
+        session.update(namespace+".keepLogin",paramMap);
+    }
+
+    @Override
+    public UserVO checkUserWithSessionKey(String value) {
+        return session.selectOne(namespace+".checkUserWithSessionKey",value);
     }
 }

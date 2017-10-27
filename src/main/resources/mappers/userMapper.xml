@@ -10,4 +10,15 @@
       WHERE uid =#{uid} and upw = #{upw}
     </select>
 
+    <update id="keepLogin">
+        UPDATE tbl_user set sessionKey =#{sessionId}, sessoonlimit =#{next} WHERE
+        uid = #{uid}
+    </update>
+
+    <select id="checkUserWithSessionKey" resultType="UserVO">
+        SELECT * FROM tbl_user
+        WHERE sessionkey = #{value}
+        and sessoonlimit > now()
+    </select>
+
 </mapper>
